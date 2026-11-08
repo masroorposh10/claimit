@@ -1,0 +1,13 @@
+# Secrets
+.env
+*.key
+
+# Your personal data never leaves your machine
+profile.json
+data/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/

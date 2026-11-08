@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}ClaimIt{% endblock %}</title>
+<style>
+:root {
+  --bg: #f7f7f4; --card: #ffffff; --text: #1d1d1b; --muted: #6b6b66; --line: #e4e3dc;
+  --accent: #1f7a4d; --accent-text: #ffffff; --likely: #1f7a4d; --possible: #a86b00; --unlikely: #8a8a84;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141413; --card: #1f1f1d; --text: #ecebe6; --muted: #9c9b94; --line: #33332f;
+    --accent: #3fb67a; --accent-text: #0b1a12; --likely: #3fb67a; --possible: #e0a33a; --unlikely: #7c7b75;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+       font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 24px 16px 64px; }
+a { color: var(--accent); }
+header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px; }
+header h1 { margin: 0; font-size: 26px; letter-spacing: -0.02em; }
+header h1 a { color: inherit; text-decoration: none; }
+header span { color: var(--muted); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.stat { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.stat b { display: block; font-size: 24px; font-variant-numeric: tabular-nums; }
+.stat small { color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
+button, .btn { background: var(--accent); color: var(--accent-text); border: 0; border-radius: 8px;
+               padding: 8px 14px; font: inherit; font-weight: 600; cursor: pointer; text-decoration: none; }
+button.ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+input, select, textarea { font: inherit; padding: 7px 9px; border-radius: 8px; border: 1px solid var(--line);
+                          background: var(--bg); color: var(--text); }
+textarea { width: 100%; min-height: 120px; }
+.tabs { display: flex; gap: 16px; border-bottom: 1px solid var(--line); margin-bottom: 12px; }
+.tabs a { padding: 8px 0; color: var(--muted); text-decoration: none; }
+.tabs a.on { color: var(--text); border-bottom: 2px solid var(--accent); }
+.row { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+.row h3 { margin: 0 0 4px; font-size: 16px; }
+.row p { margin: 0; color: var(--muted); }
+.meta { text-align: right; white-space: nowrap; font-size: 13px; color: var(--muted); }
+.pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600;
+        border: 1px solid currentColor; }
+.pill.likely { color: var(--likely); } .pill.possible { color: var(--possible); } .pill.unlikely { color: var(--unlikely); }
+.flash { background: var(--card); border-left: 4px solid var(--accent); padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; }
+.warn { border-left: 4px solid var(--possible); }
+.draft { white-space: pre-wrap; font: 14px/1.6 ui-monospace, Consolas, monospace; }
+dl { display: grid; grid-template-columns: 160px 1fr; gap: 8px 16px; margin: 0; }
+dt { color: var(--muted); }
+dd { margin: 0; }
+details summary { cursor: pointer; color: var(--muted); }
+@media (max-width: 600px) {
+  .row { flex-direction: column; } .meta { text-align: left; }
+  dl { grid-template-columns: 1fr; } dt { margin-top: 8px; }
+}
+</style>
+</head>
+<body>
+<main>
+  <header><h1><a href="/">ClaimIt</a></h1><span>money you're owed, found for you</span></header>
+  {% if msg %}<div class="flash">{{ msg }}</div>{% endif %}
+  {% block body %}{% endblock %}
+</main>
+</body>
+</html>

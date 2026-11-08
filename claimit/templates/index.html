@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block body %}
+{% if not has_profile %}
+<div class="flash warn">First step: copy <code>profile.example.json</code> to <code>profile.json</code> and fill in your
+real details (where you've lived, what you buy, which services you use). It stays on your computer.</div>
+{% endif %}
+
+<div class="stats">
+  <div class="stat"><b>{{ stats.likely }}</b><small>likely matches</small></div>
+  <div class="stat"><b>{{ stats.possible }}</b><small>worth checking</small></div>
+  <div class="stat"><b>${{ "%.0f"|format(stats.potential) }}</b><small>estimated from likely matches</small></div>
+  <div class="stat"><b>${{ "%.2f"|format(stats.received) }}</b><small>actually received</small></div>
+</div>
+
+<div class="actions">
+  <form method="post" action="/fetch"><button class="ghost">↻ Get new settlements</button></form>
+  <form method="post" action="/match">
+    <button>✨ Check {{ [stats.unchecked, 10]|min if stats.unchecked else 10 }} against my profile</button>
+    <input type="hidden" name="limit" value="10">
+  </form>
+  <small style="color:var(--muted)">{{ stats.total }} settlements tracked · {{ stats.unchecked }} not checked yet</small>
+</div>
+
+<nav class="tabs">
+  <a href="/?show=matches" class="{{ 'on' if show == 'matches' }}">My matches</a>
+  <a href="/?show=unchecked" class="{{ 'on' if show == 'unchecked' }}">Not checked</a>
+  <a href="/?show=all" class="{{ 'on' if show == 'all' }}">Everything</a>
+</nav>
+
+{% for r in rows %}
+<a href="/s/{{ r.id }}" style="text-decoration:none;color:inherit">
+<div class="card row">
+  <div>
+    <h3>{{ r.title }}</h3>
+    <p>{{ r.summary or "Not checked yet" }}</p>
+  </div>
+  <div class="meta">
+    {% if r.match %}<span class="pill {{ r.match }}">{{ r.match }}</span>{% endif %}
+    {% if r.status != 'new' %}<span class="pill">{{ r.status }}</span>{% endif %}<br>
+    {% if r.payout_estimate %}~${{ "%.0f"|format(r.payout_estimate) }}<br>{% endif %}
+    {% if r.deadline %}{{ "⚠ expired " if r.deadline < today else "due " }}{{ r.deadline }}{% endif %}
+  </div>
+</div>
+</a>
+{% else %}
+<div class="card"><p style="color:var(--muted);margin:0">
+  {% if show == 'matches' %}No matches yet. Get new settlements, then check them against your profile.
+  {% else %}Nothing here.{% endif %}
+</p></div>
+{% endfor %}
+
+<details class="card">
+  <summary>+ Add a settlement notice yourself (e.g. a Canadian one you saw)</summary>
+  <form method="post" action="/add" style="display:grid;gap:8px;margin-top:12px">
+    <input name="title" placeholder="Title" required>
+    <input name="url" placeholder="Link (optional)">
+    <textarea name="text" placeholder="Paste the full notice text here" required></textarea>
+    <div><button>Add</button></div>
+  </form>
+</details>
+{% endblock %}

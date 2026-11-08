@@ -1,0 +1,29 @@
+{
+  "_note": "Copy this to profile.json and fill in YOUR real details. profile.json is git-ignored and stays on your machine. Be honest: ClaimIt only helps you claim what you actually qualify for.",
+  "country": "Canada",
+  "places_lived": [
+    {"region": "Alberta, Canada", "from": 2015, "to": "present"}
+  ],
+  "products_bought": [
+    "iPhone 12 (bought 2021)",
+    "Kellogg's cereal (regularly)",
+    "Ring doorbell"
+  ],
+  "services_and_accounts": [
+    "Rogers mobile (2018-2023)",
+    "TD Bank chequing",
+    "Netflix",
+    "Facebook / Instagram account since 2012",
+    "Google account"
+  ],
+  "data_breach_notices": [
+    "Got a breach notice email from LifeLabs (2019)"
+  ],
+  "vehicles": [
+    "2017 Honda Civic"
+  ],
+  "tickets_and_events": [
+    "Ticketmaster concert tickets 2022-2024"
+  ],
+  "other": "Anything else that might matter: rentals, gyms, airlines, apps, medications, etc."
+}

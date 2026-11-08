@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ d.title }} · ClaimIt{% endblock %}
+{% block body %}
+<p><a href="/">← back</a></p>
+<div class="card">
+  <h2 style="margin-top:0">{{ d.title }}</h2>
+  {% if d.match %}
+  <p><span class="pill {{ d.match }}">{{ d.match }} match</span> &nbsp; {{ d.summary }}</p>
+  <dl>
+    <dt>Why</dt><dd>{{ d.reasons }}</dd>
+    <dt>Who qualifies</dt><dd>{{ d.who_qualifies }}</dd>
+    <dt>Payout</dt><dd>{{ d.payout }}</dd>
+    <dt>Deadline</dt><dd>{{ d.deadline or "Not stated: check the official site" }}</dd>
+    <dt>Proof needed</dt><dd>{{ d.proof_required }}</dd>
+    <dt>Official site</dt><dd>{% if d.claim_url %}<a href="{{ d.claim_url }}" target="_blank" rel="noopener">{{ d.claim_url }}</a>{% else %}Not in the notice{% endif %}</dd>
+    {% if questions %}<dt>Confirm first</dt><dd><ul style="margin:0;padding-left:18px">{% for q in questions %}<li>{{ q }}</li>{% endfor %}</ul></dd>{% endif %}
+  </dl>
+  {% else %}
+  <p style="color:var(--muted)">Not checked against your profile yet. Go back and run a check.</p>
+  {% endif %}
+  {% if d.url %}<p><a href="{{ d.url }}" target="_blank" rel="noopener">Read the full notice ↗</a></p>{% endif %}
+</div>
+
+<div class="card">
+  <div class="actions" style="margin:0">
+    <form method="post" action="/s/{{ d.id }}/draft"><button>📝 {{ "Redo" if d.draft else "Prepare" }} my claim worksheet</button></form>
+    <form method="post" action="/s/{{ d.id }}/status" style="display:flex;gap:8px;align-items:center">
+      <select name="status">{% for s in statuses %}<option {{ 'selected' if s == d.status }}>{{ s }}</option>{% endfor %}</select>
+      <input name="amount" placeholder="$ received" size="9" value="{{ d.amount_received or '' }}">
+      <button class="ghost">Save</button>
+    </form>
+  </div>
+</div>
+
+{% if d.draft %}
+<div class="card"><div class="draft">{{ d.draft }}</div></div>
+{% endif %}
+
+<details class="card"><summary>Notice text</summary><div class="draft">{{ d.raw_text }}</div></details>
+{% endblock %}
